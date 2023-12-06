@@ -1,8 +1,10 @@
 // mysql2 모듈을 불러옵니다.
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import { establishSSHconnection } from "./ssh.js";
 
 dotenv.config();
+await establishSSHconnection();
 
 // MySQL 연결 정보를 설정합니다.
 export const connection = await mysql.createConnection({
