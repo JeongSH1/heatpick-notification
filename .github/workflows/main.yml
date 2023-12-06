@@ -20,11 +20,10 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  cd noti
                   npm install
 
             - name: Build Docker image
-              run: docker build -t heatpick-notification:latest ./noti
+              run: docker build -t heatpick-notification:latest .
 
             - name: Login to Docker Hub
               run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
