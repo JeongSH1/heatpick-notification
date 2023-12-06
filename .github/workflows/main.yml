@@ -1,0 +1,46 @@
+name: CI/CD using github actions & docker
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "18"
+
+            - name: Install dependencies
+              run: |
+                  cd noti
+                  npm install
+
+            - name: Build Docker image
+              run: docker build -t heatpick-notification:latest ./noti
+
+            - name: Login to Docker Hub
+              run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Push Docker image to Docker Hub
+              run: docker push heatpick-notification:latest
+
+            - name: SSH into Ubuntu server and pull the latest image
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.SERVER_IP }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  script: |
+                      docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+                      docker pull heatpick-notification
+                      docker stop heatpick-notification-container || true
+                      docker rm heatpick-notification-container || true
+                      docker run -e DB_HOST=${{ secrets.DB_HOST }} -e DB_USER_NAME=${{ secrets.DB_USER_NAME }} -e DB_USER_PASSWORD=${{ secrets.DB_USER_PASSWORD }} -e DB_NAME=${{ secrets.DB_NAME }} -e SA_TYPE=${{ secrets.SA_TYPE }} -e SA_PROJECT_ID=${{ secrets.SA_PROJECT_ID}} -e SA_PRIVATE_KEY_ID=${{secrets.SA_PRIVATE_KEY_ID}} -e SA_PRIVATE_KEY=${{secrets.SA_PRIVATE_KEY}} -e SA_CLIENT_EMAIL=${{secrets.SA_CLIENT_EMAIL}} -e SA_CLIENT_ID=${{secrets.SA_CLIENT_ID}} -e SA_AUTH_URI=${{secrets.SA_AUTH_URI}} -e SA_TOKEN_URI=${{secrets.SA_TOKEN_URI}} -e SA_AUTH_PROVIDER_CERT_URL=${{secrets.SA_AUTH_PROVIDER_CERT_URL}} -e SA_CLIENT_CERT_URL=${{secrets.SA_CLIENT_CERT_URL}} -e SA_UNIVERSE_DOMAIN=${{SA_UNIVERSE_DOMAIN}} -d -p 3000:3000 --name heatpick-notification-container heatpicj-notification
