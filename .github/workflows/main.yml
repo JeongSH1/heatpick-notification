@@ -23,13 +23,13 @@ jobs:
                   npm install
 
             - name: Build Docker image
-              run: docker build -t jeongseho1/heatpick-notification .
+              run: docker build -t jeongseho1/heatpick-notification:latest .
 
             - name: Login to Docker Hub
               run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Push Docker image to Docker Hub
-              run: docker push jeongseho1/heatpick-notification
+              run: docker push jeongseho1/heatpick-notification:latest
 
             - name: SSH into Ubuntu server and pull the latest image
               uses: appleboy/ssh-action@master
@@ -42,4 +42,4 @@ jobs:
                       docker pull jeongseho1/heatpick-notification
                       docker stop heatpick-notification-container || true
                       docker rm heatpick-notification-container || true
-                      docker run -e DB_HOST=${{ secrets.DB_HOST }} -e DB_USER_NAME=${{ secrets.DB_USER_NAME }} -e DB_USER_PASSWORD=${{ secrets.DB_USER_PASSWORD }} -e DB_NAME=${{ secrets.DB_NAME }} -e SA_TYPE=${{ secrets.SA_TYPE }} -e SA_PROJECT_ID=${{ secrets.SA_PROJECT_ID}} -e SA_PRIVATE_KEY_ID=${{secrets.SA_PRIVATE_KEY_ID}} -e SA_PRIVATE_KEY=${{secrets.SA_PRIVATE_KEY}} -e SA_CLIENT_EMAIL=${{secrets.SA_CLIENT_EMAIL}} -e SA_CLIENT_ID=${{secrets.SA_CLIENT_ID}} -e SA_AUTH_URI=${{secrets.SA_AUTH_URI}} -e SA_TOKEN_URI=${{secrets.SA_TOKEN_URI}} -e SA_AUTH_PROVIDER_CERT_URL=${{secrets.SA_AUTH_PROVIDER_CERT_URL}} -e SA_CLIENT_CERT_URL=${{secrets.SA_CLIENT_CERT_URL}} -e SA_UNIVERSE_DOMAIN=${{secrets.SA_UNIVERSE_DOMAIN}} -d -p 3000:3000 --name heatpick-notification-container jeongseho1/heatpick-notification
+                      docker run -e DB_HOST=${{ secrets.DB_HOST }} -e DB_USER_NAME=${{ secrets.DB_USER_NAME }} -e DB_USER_PASSWORD=${{ secrets.DB_USER_PASSWORD }} -e DB_NAME=${{ secrets.DB_NAME }} -e SA_TYPE=${{ secrets.SA_TYPE }} -e SA_PROJECT_ID=${{ secrets.SA_PROJECT_ID }} -e SA_PRIVATE_KEY_ID=${{ secrets.SA_PRIVATE_KEY_ID }} -e SA_PRIVATE_KEY=${{ secrets.SA_PRIVATE_KEY }} -e SA_CLIENT_EMAIL=${{ secrets.SA_CLIENT_EMAIL }} -e SA_CLIENT_ID=${{ secrets.SA_CLIENT_ID }} -e SA_AUTH_URI=${{ secrets.SA_AUTH_URI }} -e SA_TOKEN_URI=${{ secrets.SA_TOKEN_URI }} -e SA_AUTH_PROVIDER_CERT_URL=${{ secrets.SA_AUTH_PROVIDER_CERT_URL }} -e SA_CLIENT_CERT_URL=${{ secrets.SA_CLIENT_CERT_URL }} -e SA_UNIVERSE_DOMAIN=${{ secrets.SA_UNIVERSE_DOMAIN }} -d -p 3000:3000 --name heatpick-notification-container jeongseho1/heatpick-notification
