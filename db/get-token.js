@@ -12,6 +12,6 @@ export async function getTokenByUserId(userId) {
         return null; // 해당 userId에 대한 데이터가 없을 경우
       }
     } catch (err) {
-      throw err;
+      console.error(err);
     }
   }

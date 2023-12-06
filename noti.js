@@ -2,6 +2,7 @@ import express from "express";
 import admin from "firebase-admin";
 import { getTokenByUserId } from "./db/get-token.js";
 import { serviceAccount } from "./key/service-account.js";
+import { saveToken } from "./db/save-token.js";
 
 // Firebase Admin SDK 초기화
 
@@ -14,6 +15,18 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+
+app.post('/save-token', async (req, res) => {
+  const { userId, token } = req.body;
+  
+  const result = await saveToken(userId, token);
+
+  if (result) {
+    res.status(200).send('token saved successfully');
+  } else {
+    res.status(404).send('token saved failed');
+  }
+})
 
 
 // FCM 메시지 전송 엔드포인트
