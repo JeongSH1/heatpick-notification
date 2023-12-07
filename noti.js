@@ -19,12 +19,23 @@ app.use(express.json());
 app.post('/save-token', async (req, res) => {
   const { userId, token } = req.body;
   
-  const result = await saveToken(userId, token);
+  try {
+    const result = await saveToken(userId, token);
 
-  if (result) {
-    res.status(200).send('token saved successfully');
-  } else {
-    res.status(404).send('token saved failed');
+    if (result) {
+      res.status(200).send('token saved successfully');
+    } else {
+      // saveToken 함수가 false를 반환하는 경우에 대한 처리
+      res.status(404).send('token saved failed');
+    }
+  } catch (error) {
+    // saveToken 함수에서 에러가 발생한 경우에 대한 처리
+
+    if (error.message === 'ER_DUP_ENTRY') {
+      res.status(409).send('Token already exists for this user');
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
   }
 })
 
