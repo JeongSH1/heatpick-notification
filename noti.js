@@ -31,7 +31,7 @@ app.post('/save-token', async (req, res) => {
   } catch (error) {
     // saveToken 함수에서 에러가 발생한 경우에 대한 처리
 
-    if (error.message === 'ER_DUP_ENTRY') {
+    if (error.code === 'ER_DUP_ENTRY') {
       res.status(409).send('Token already exists for this user');
     } else {
       res.status(500).send('Internal Server Error');
