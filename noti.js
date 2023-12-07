@@ -42,7 +42,7 @@ app.post('/save-token', async (req, res) => {
 
 // FCM 메시지 전송 엔드포인트
 app.post('/send-notification', async (req, res) => {
-  const { userId, title, body } = req.body;
+  const { userId, title = '무제', body = 'blank' } = req.body;
   
   const token = await getTokenByUserId(userId);
 
