@@ -67,6 +67,7 @@ app.post('/send-notification', async (req, res) => {
         res.status(500).send('Error sending notification');
       });
   } catch(err) {
+    res.status(500).send('Error sending notification');
     console.log(err);
   }
 
