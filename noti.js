@@ -45,7 +45,7 @@ app.post('/send-notification', async (req, res) => {
   const { userId, title = '무제', body = 'blank' } = req.body;
   
   const token = await getTokenByUserId(userId);
-  console.log(userId, title, body, token);
+  console.log(`${new Date}: send title: ${title} send body: ${body}`);
 
   const message = {
     notification: {
