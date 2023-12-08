@@ -45,6 +45,7 @@ app.post('/send-notification', async (req, res) => {
   const { userId, title = '무제', body = 'blank' } = req.body;
   
   const token = await getTokenByUserId(userId);
+  console.log(userId, title, body, token);
 
   const message = {
     notification: {
@@ -63,6 +64,9 @@ app.post('/send-notification', async (req, res) => {
       console.error('Error sending message:', error);
       res.status(500).send('Error sending notification');
     });
+
+
+    
 });
 
 app.listen(port, () => {
