@@ -44,26 +44,31 @@ app.post('/save-token', async (req, res) => {
 app.post('/send-notification', async (req, res) => {
   const { userId, title = '무제', body = 'blank' } = req.body;
   
-  const token = await getTokenByUserId(userId);
-  console.log(`${new Date}: send title: ${title} send body: ${body}`);
+  try {
+    const token = await getTokenByUserId(userId);
+    console.log(`${new Date}: send title: ${title} send body: ${body}`);
+    
 
-  const message = {
-    notification: {
-      title,
-      body,
-    },
-    token,
-  };
+    const message = {
+      notification: {
+        title,
+        body,
+      },
+      token,
+    };
 
-  admin.messaging().send(message)
-    .then((response) => {
-      console.log('Successfully sent message:', response);
-      res.status(200).send('Notification sent successfully');
-    })
-    .catch((error) => {
-      console.error('Error sending message:', error);
-      res.status(500).send('Error sending notification');
-    });
+    admin.messaging().send(message)
+      .then((response) => {
+        console.log('Successfully sent message:', response);
+        res.status(200).send('Notification sent successfully');
+      })
+      .catch((error) => {
+        console.error('Error sending message:', error);
+        res.status(500).send('Error sending notification');
+      });
+  } catch(err) {
+    console.log(err);
+  }
 
 
     
