@@ -1,8 +1,8 @@
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 
 dotenv.config();
 
-export const serviceAccount = {
+const serviceAccount = {
   "type": process.env.SA_TYPE,
   "project_id": process.env.SA_PROJECT_ID,
   "private_key_id": process.env.SA_PRIVATE_KEY_ID,
@@ -15,3 +15,5 @@ export const serviceAccount = {
   "client_x509_cert_url": process.env.SA_CLIENT_CERT_URL,
   "universe_domain": process.env.SA_UNIVERSE_DOMAIN,
 }
+
+module.exports { serviceAccount }
