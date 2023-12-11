@@ -16,4 +16,4 @@ const serviceAccount = {
   "universe_domain": process.env.SA_UNIVERSE_DOMAIN,
 }
 
-module.exports { serviceAccount }
+module.exports = { serviceAccount }
