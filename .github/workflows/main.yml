@@ -23,6 +23,11 @@ jobs:
             - name: Install dependencies
               run: |
                   npm install
+                  
+            - name: Install Redis
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y redis-server
 
             - name: Build Docker image
               run: docker build -t jeongseho1/heatpick-notification:latest .
