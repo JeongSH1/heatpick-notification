@@ -1,5 +1,7 @@
 FROM node:18
 
+RUN apt-get update && apt-get install -y redis-server
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
