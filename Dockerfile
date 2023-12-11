@@ -10,4 +10,4 @@ RUN npm install
 COPY . .
 
 # 컨테이너가 시작될 때 실행할 명령을 설정합니다.
-CMD CMD ["sh", "-c", "redis-server --daemonize yes && npm start"]
+CMD ["sh", "-c", "redis-server --daemonize yes && npm start"]
