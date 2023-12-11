@@ -1,8 +1,5 @@
 FROM node:18
 
-FROM redis:latest
-EXPOSE 6379
-
 WORKDIR /usr/src/app
 
 COPY package*.json ./
