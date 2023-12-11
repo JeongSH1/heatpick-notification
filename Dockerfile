@@ -1,6 +1,7 @@
 FROM node:18
 
-RUN apt-get update && apt-get install -y redis-server
+FROM redis:latest
+EXPOSE 6379
 
 WORKDIR /usr/src/app
 
