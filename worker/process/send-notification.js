@@ -6,6 +6,8 @@ const sendNotificationProcess = async (job) => {
     const message = notificationManager.createMessage(token, title, body);
     await notificationManager.pushOne(message);
 
+    return { jobName: job.name }
+
 }
 
 module.exports = {

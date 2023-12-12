@@ -18,14 +18,12 @@ class NotificationManager {
     }
 
     async pushOne(message) {
-        admin.messaging().send(message)
+      admin.messaging().send(message)
       .then((response) => {
-        console.log('Successfully sent message:', response);
-        res.status(200).send('Notification sent successfully');
+        console.log(`[${new Date().toUTCString()}] [SUCCEED] Successfully sent message:`, response);
       })
       .catch((error) => {
-        console.error('Error sending message:', error);
-        res.status(500).send('Error sending notification');
+        console.error(`[${new Date().toUTCString()}] [FAILED] Error sending message:`, error);
       });
     }
 }

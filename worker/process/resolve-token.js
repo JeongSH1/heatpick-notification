@@ -4,7 +4,7 @@ const resolveTokenProcess = async (job) => {
     const tokenManager = new TokenManager();
     const { userId, title, body } = job.data;
     const tokens = await tokenManager.getTokens(userId);
-    return { tokens, title, body };
+    return { jobName: job.name, tokens, title, body };
 }
 
 module.exports = {
