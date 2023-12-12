@@ -2,11 +2,16 @@ const { Worker } = require('bullmq');
 const { resolveTokenProcess } = require('./process/resolve-token.js');
 const { sendNotificationProcess } = require('./process/send-notification.js');
 const { redisOptions } = require('../bull/redis-option.js');
+const { saveTokenProcess } = require('./process/save-token.js');
 
 function setupWorker() {
     const worker = new Worker(
         'task-queue',
         async (job) => {
+
+            if (job.name == 'save-token') {
+                return await saveTokenProcess(job);
+            }
     
             if (job.name === 'resolve-token') {
                 return await resolveTokenProcess(job);
@@ -15,6 +20,8 @@ function setupWorker() {
             if (job.name == 'send-notification') {
                 return await sendNotificationProcess(job);
             }
+
+            
         }, 
         {
             connection: redisOptions,

@@ -1,14 +1,12 @@
-const { TokenManager } = require("../manager/token-manager.js");
+const { taskQueue } = require("../bull/task-queue.js");
+
 
 async function saveTokenAPI(req, res) {
-  const { userId, token } = req.body;
-  const tokenManager = new TokenManager()
+  const { token, userId } = req.body;
   try {
-    await tokenManager.saveToken(token, userId);
-    console.log(`[${new Date().toUTCString()}] [COMPLETED] ${userId} saved token`);
+    await taskQueue.add('save-token', { token, userId });
     res.status(200).send('Token saved successfully');
   } catch (error) {
-    console.log(`[${new Date().toUTCString()}] [FAILED] ${userId} saved token`)
     res.status(500).send('Internal Server Error');
   }
 }
